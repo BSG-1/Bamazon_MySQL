@@ -1,0 +1,28 @@
+{
+  "name": "bamazon_mysql",
+  "version": "1.0.0",
+  "description": "An Amazon-like storefront using a MySQL database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BSG-1/Bamazon_MySQL.git"
+  },
+  "keywords": [
+    "amazon",
+    "MySQL",
+    "general_amazingness"
+  ],
+  "author": "Bahadur Singh Ghataorhe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BSG-1/Bamazon_MySQL/issues"
+  },
+  "homepage": "https://github.com/BSG-1/Bamazon_MySQL#readme",
+  "dependencies": {
+    "inquirer": "^5.0.1",
+    "sql": "^0.78.0"
+  }
+}
