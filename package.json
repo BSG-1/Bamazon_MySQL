@@ -23,6 +23,7 @@
   "homepage": "https://github.com/BSG-1/Bamazon_MySQL#readme",
   "dependencies": {
     "inquirer": "^5.0.1",
+    "mysql": "^2.15.0",
     "sql": "^0.78.0"
   }
 }
