@@ -6,49 +6,23 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
-    // Your username
     user: 'root',
-    // Your password
     password: '',
     database: 'bamazon'
 });
 
 connection.connect(function(err){
-	if (err) throw err;
-	console.log("Connect as ID: ", connection.threadId);
-	promptManager();
+    if (err) throw err;
+    console.log("Connect as ID: ", connection.threadId);
+    promptManager();
 });
 
 //show manager all inventory
 function SelectAll(){
-	connection.query("SELECT * FROM products",function(err,res){
-		if (err) throw err;
-		console.log("\n" + "Managerial view of the inventory: " + "\n");
-		console.log("---------------------------------------------------")
-		var strOut = '';
-		for (var i = 0; i < res.length; i++) {
-			strOut = '';
-            strOut += 'Item ID: ' + res[i].item_id + '  //  ';
-            strOut += 'Product Name: ' + res[i].product_name + '  //  ';
-            strOut += 'Department: ' + res[i].department_name + '  //  ';
-            strOut += 'Price: $' + res[i].price_usd + ' // ';
-            strOut += 'Stock Quantity: ' + res[i].stock_quantity + '\n';
-            console.log(strOut);
-		}
-		console.log("---------------------------------------------------")
-
-		//console.log("result",res);
-	})		
-    promptManager();
-}
-
-//show manager the low inventory
-function low_count(){
-    var lowCount = "SELECT * FROM products WHERE stock_quantity <= 5";
-    connection.query(lowCount, function(err,res){
+    connection.query("SELECT * FROM products",function(err,res){
         if (err) throw err;
+        console.log("\n" + "Managerial view of the inventory: ");
         console.log("---------------------------------------------------")
-        console.log("\n" + "The following items are low (below 5): " + "\n");
         var strOut = '';
         for (var i = 0; i < res.length; i++) {
             strOut = '';
@@ -60,8 +34,31 @@ function low_count(){
             console.log(strOut);
         }
         console.log("---------------------------------------------------")
-    })
     promptManager();
+        //console.log("result",res);
+    })      
+}
+
+//show manager the low inventory
+function low_count(){
+    var lowCount = "SELECT * FROM products WHERE stock_quantity < 100";
+    connection.query(lowCount, function(err,res){
+        if (err) throw err;
+        console.log("\n---------------------------------------------------")
+        console.log("\n" + "The following items are low (below 100): " + "\n");
+        var strOut = '';
+        for (var i = 0; i < res.length; i++) {
+            strOut = '';
+            strOut += 'Item ID: ' + res[i].item_id + '  //  ';
+            strOut += 'Product Name: ' + res[i].product_name + '  //  ';
+            strOut += 'Department: ' + res[i].department_name + '  //  ';
+            strOut += 'Price: $' + res[i].price_usd + ' // ';
+            strOut += 'Stock Quantity: ' + res[i].stock_quantity + '\n';
+            console.log(strOut);
+        }
+        console.log("---------------------------------------------------")
+    promptManager();
+    })
 }
 
 //manager can add more to the inventory
@@ -112,6 +109,54 @@ function add_more(){
         })        
     })
 }
+
+//manager can add a new product
+function new_product(){
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'product_name',
+            message: 'Please enter the new product name.'
+        },
+        {
+            type: 'input',
+            name: 'department_name',
+            message: 'What department does it belong to?',
+        },
+        {
+            type: 'input',
+            name: 'price_usd',
+            message: 'What is its price per unit (in $USD)?',
+            validate: isNumPositive
+        },
+        {
+            type: 'input',
+            name: 'stock_quantity',
+            message: 'How many are in stock?',
+            validate: isNumPositive
+        }
+    ]).then(function(input){
+        console.log('Adding the new item: \n product_name = ' + input.product_name + '\n'+ 
+            '   department_name = ' + input.department_name + '\n' + 
+            '   price_usd = ' + input.price_usd + '\n' +
+            '   stock_quantity = ' + input.stock_quantity);
+        console.log("---------------------------------------------------");
+        
+        //insertion query
+        var insert = "INSERT INTO products SET ?";
+
+        //Add new prodcut to the bamazon db
+        connection.query(insert, input, function(error, results){
+            if (error) throw error;
+            console.log('New product has been added to the inventory under Item ID ' + results.insertId + '.');
+            console.log("\n---------------------------------------------------\n");
+
+        promptManager();
+        });
+    })
+}
+
+
 
 // validateInput makes sure that the user is supplying only positive integers for their inputs
 function isNumPositive(value) {
