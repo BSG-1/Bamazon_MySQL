@@ -2,7 +2,7 @@
 
 Bamazon_MySQL is a CLI app that works on three levels:
 
-* A MySQL database called "bamazon" that has a table called "products", that can be accessed [through this link] (https://github.com/BSG-1/Bamazon_MySQL/blob/master/Images/Bamazon%20Database%20(MySQL).png)
+* A MySQL database called "bamazon" that has a table called "products" ![Image of products table in bamazon] (https://github.com/BSG-1/Bamazon_MySQL/blob/master/Images/Bamazon%20Database%20(MySQL).png)
 
 * A **Customer** view, accessed by the terminal command **node bamazonCustomer.js**
     - this shows a customer view of a [failure to purchase] due to an insufficient supply (https://github.com/BSG-1/Bamazon_MySQL/blob/master/Images/Customer%20View%20(failure%20to%20purchase).png)
